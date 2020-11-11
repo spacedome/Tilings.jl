@@ -1,5 +1,10 @@
 module Tilings
 
-# Write your package code here.
+using Luxor
+using Colors
+
+include("tiles.jl")
+
+export PolyTile, draw
 
 end
