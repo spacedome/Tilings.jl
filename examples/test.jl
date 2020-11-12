@@ -191,11 +191,119 @@ function spiral(N=17, dent=N*0.59)
 	end
 end
 
-# ╔═╡ 39940a4c-23a8-11eb-0ccc-1f8274898b47
-
-
 # ╔═╡ 4f93fd3c-23a0-11eb-187a-31f128f923af
-spiral(8)
+spiral(8, 8*.59)
+
+# ╔═╡ 3063b7e6-2462-11eb-2285-a978a12c540d
+function spiral2()
+	@svg begin
+		local function sstyle(x)
+			setcolor((0.3+0.6*rand(),0.05,0.3+0.4*rand()))
+			fillpreserve()
+			setline(1)
+			setcolor("lavender")
+			strokepath()
+		end
+		setline(0.5)
+		θ = pi/12
+		slen = 13.0
+		# translate(0,150)
+		a1 = exp(-θ*im)
+		a2 = a1 + exp(0θ*im)
+		a3 = a2 + exp(1θ*im)
+		a4 = a3 + exp(2θ*im)
+		b1 = complex(1.0,0.0)
+		b2 = b1 + exp(θ*im)
+		b3 = b2 + exp(2θ*im)
+		b4 = b3 + exp(3θ*im)
+		
+		points = [Point(0.0, 0.0),
+				  Point(reim(a1)), Point(reim(a2)), Point(reim(a3)), Point(reim(a4)),
+				  Point(reim(b4)), Point(reim(b3)), Point(reim(b2)), Point(reim(b1))]
+		local stile = Tilings.polytile(points, sstyle)
+		scale(slen)
+		
+		rotate(5θ)
+		translate(reim(b4*0.5)...)
+		rotate(-5θ)
+		
+		@layer begin
+			rotate(-7θ)
+			for i=1:8
+				draw(stile)
+				rotate(θ)
+			end
+			draw(stile)
+			for j=0:7
+				for i=1:12
+					for k=1:j
+						translate(reim(b3-a4)...)
+						draw(stile)
+						@layer begin
+							translate(reim(a4)...)
+							rotate(-2θ)
+							transform([1 0 0 -1 0 0])
+							translate(reim(-b4)...)
+							draw(stile)
+						end
+					end
+					translate(reim(b3-a4)...)
+					draw(stile)
+					rotate(θ)
+					draw(stile)
+					@layer begin
+						translate(reim(a4)...)
+						rotate(-3θ)
+						transform([1 0 0 -1 0 0])
+						translate(reim(-b3)...)
+						draw(stile)
+					end
+				end
+			end
+		end
+		transform([-1 0 0 1 0 0])
+		rotate(5θ)
+		translate(reim(-b4)...)
+		@layer begin
+			for i=1:15
+				draw(stile)
+				rotate(-θ)
+			end
+			draw(stile)
+			# setline(3)
+			for j=0:7
+				for i=1:(12 + (j==0))
+					for k=1:j
+						draw(stile)
+						@layer begin
+							translate(reim(a4)...)
+							rotate(-2θ)
+							transform([1 0 0 -1 0 0])
+							translate(reim(-b4)...)
+							draw(stile)
+						end
+						translate(reim(-b3+a4)...)
+					end
+					
+					draw(stile)
+					rotate(-θ)
+					draw(stile)
+					@layer begin
+						translate(reim(a4)...)
+						rotate(-2θ)
+						transform([1 0 0 -1 0 0])
+						translate(reim(-b4)...)
+						draw(stile)
+					end
+					translate(reim(-b3+a4)...)
+				end
+			end
+		end
+	end
+end
+
+# ╔═╡ 65841844-2462-11eb-2c40-e908aa584922
+spiral2()
 
 # ╔═╡ Cell order:
 # ╠═a6f1b546-2383-11eb-3f21-9dc5e48afc99
@@ -206,5 +314,6 @@ spiral(8)
 # ╠═c62acd62-23b2-11eb-3579-0f0eb87ffcdb
 # ╠═5338dda0-238b-11eb-2dd2-6f4bed2df8a0
 # ╠═7297798a-23a0-11eb-0bbc-a38faf9ca80e
-# ╠═39940a4c-23a8-11eb-0ccc-1f8274898b47
 # ╠═4f93fd3c-23a0-11eb-187a-31f128f923af
+# ╠═3063b7e6-2462-11eb-2285-a978a12c540d
+# ╠═65841844-2462-11eb-2c40-e908aa584922
